@@ -29,6 +29,8 @@ Selezionando **Righello reticolo** compare un piccolo coordinatometro sui bordi 
 
 **Righello cm / mm** è il nuovo strumento predefinito: un righello trasparente da 10 cm con tacche di 1 mm. È indipendente da coordinate, zoom, reticolo, posizione del mouse e area di esercizio; resta sullo schermo mentre sposti la carta. Si trascina dal corpo e ruota liberamente attorno allo zero dal pallino. Sono disponibili angolo numerico, 0° / 90°, ricentraggio e Fissa/Sblocca. Quando è fissato, i clic attraversano il righello e raggiungono la carta. La calibrazione del monitor regola i cm/mm fisici: non è un adattamento alle distanze del reticolo. A parità di calibrazione, la lunghezza rimane identica in tutti gli esercizi. Si ricava manualmente la distanza sul terreno applicando 1:25.000; per gradi/minuti/secondi si usa la proporzione rispetto all’intervallo del reticolo. Tastiera sul righello: frecce per spostare, Q/E per ruotare; Maiusc aumenta il passo. Su schermi stretti parte verticale e mantiene i suoi 10 cm.
 
+Sono disponibili due righelli normali simultanei: giallo e azzurro, entrambi da 10 cm e con tacche di 1 mm. Ognuno conserva posizione, inclinazione e blocco indipendenti e ha una riga di comandi identificata dal colore. Partono perpendicolari per incrociare le letture. Se si sovrappongono, agire sul corpo o sui comandi di uno lo porta davanti all’altro. Fissare entrambi consente di segnare il punto sulla carta attraverso l’incrocio. La calibrazione del monitor vale per entrambi e le graduazioni rimangono indipendenti dal reticolo.
+
 ## Cartografia e librerie
 
 - [Leaflet 1.9.4](https://leafletjs.com/reference.html), BSD-2-Clause, distribuito localmente con licenza in `dist/vendor/`.

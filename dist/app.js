@@ -1,6 +1,6 @@
 import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gradeAnswer, parseAngle, scaleZoom } from './geo.js';
 import { createMapRuler } from './ruler.js?v=1.1.0';
-import { createPhysicalRuler } from './physical-ruler.js?v=1.2.0';
+import { createPhysicalRuler } from './physical-ruler.js?v=1.3.0';
 
 const $ = id => document.getElementById(id);
 const geo = createGeo(window.proj4);
@@ -64,6 +64,7 @@ let answerMarker = null;
 let adjustingScale = false;
 const ruler = createMapRuler(map, geo, () => state.system, $('map-ruler'));
 const normalRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('physical-ruler'), controls: $('physical-ruler-controls'), pixelsPerMm: state.ppm });
+const blueRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('blue-ruler'), controls: $('blue-ruler-controls'), pixelsPerMm: state.ppm, perpendicular: true });
 
 function scaleAndGrid() {
   const lat = map.getCenter().lat;
@@ -75,6 +76,7 @@ function scaleAndGrid() {
   }
   drawGrid();
   normalRuler.setCalibration(state.ppm);
+  blueRuler.setCalibration(state.ppm);
   const center = map.getCenter();
   const p = map.latLngToContainerPoint(center);
   const mpp = distance(map.containerPointToLatLng(p), map.containerPointToLatLng([p.x + 100, p.y])) / 100;
@@ -94,6 +96,7 @@ function drawGrid() {
   gridLayer.clearLayers();
   ruler.setEnabled(state.grid && state.rulerMode === 'grid');
   normalRuler.setEnabled(state.rulerMode === 'normal');
+  blueRuler.setEnabled(state.rulerMode === 'normal');
   $('grid-labels').replaceChildren();
   $('grid-key').hidden = !state.grid;
   $('grid-key').lastChild.textContent = state.system === 'utm' ? ' Reticolo UTM · 1 km' : ' Reticolo geografico · 1′';
