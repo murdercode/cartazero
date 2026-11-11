@@ -13,3 +13,13 @@ dialog{border:1px solid #dce3d1;border-radius:13px;padding:28px 30px;background:
 @media(max-width:720px){.settings-row{flex-direction:column;gap:3px}.settings-row label{width:100%;flex:initial;min-width:0}.settings-row select{max-width:220px;min-height:26px}}
 @media(max-width:390px){.mode-button{padding:11px 7px;gap:5px}.mode-button>span:nth-child(2){font-size:10px}.mode-button small{font-size:8px}.area-select select{max-width:136px}.map-tools{gap:1px}.layer-select select{max-width:92px}.map-instruction{font-size:8px}.coordinate-value{font-size:17px}.geographic .coordinate-value{font-size:12px}.region-badge{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.map-ruler{position:absolute;inset:0;width:100%;height:100%;z-index:460;pointer-events:none;overflow:hidden;user-select:none}
+.map-ruler .ruler-tape{fill:#fffdebe8;stroke:#58765e66;stroke-width:.6}
+.map-ruler .ruler-baseline{stroke:#365e46;stroke-width:1.2}
+.map-ruler .ruler-tick{stroke:#365e46;stroke-width:.85}
+.map-ruler text{fill:#244c3b;stroke:none;font:500 8px var(--sans);font-variant-numeric:tabular-nums;text-anchor:middle;dominant-baseline:central}
+.map-ruler .ruler-guides path{fill:none;stroke:#a56131;stroke-width:1;stroke-dasharray:3 4;opacity:.85}
+.map-ruler .ruler-index{stroke:#c16f36;stroke-width:1.5}
+.map-ruler .ruler-cursor{fill:#b96d37;stroke:#fffef5;stroke-width:1.5}
+@media(max-width:720px){.map-toolbar .area-select{flex:1;min-width:0}.map-toolbar .area-select select{width:100%;min-width:0;max-width:150px}.map-tools{flex-shrink:0}.map-tools .layer-select select{max-width:88px}}

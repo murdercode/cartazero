@@ -1,4 +1,5 @@
 import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gradeAnswer, parseAngle, scaleZoom } from './geo.js';
+import { createMapRuler } from './ruler.js?v=1.1.0';
 
 const $ = id => document.getElementById(id);
 const geo = createGeo(window.proj4);
@@ -21,6 +22,7 @@ const state = {
   ppm: Number.isFinite(saved.ppm) && saved.ppm >= .9 && saved.ppm <= 15 ? saved.ppm : DEFAULT_PPM,
   calibrated: saved.calibrated === true,
   grid: saved.grid !== false,
+  ruler: saved.ruler !== false,
   target: null, answer: null, resolved: false, exercise: 0,
 };
 function saveSettings() { writeStorage(STORAGE, { ...state, area: state.area.id, target: undefined, answer: undefined, exercise: undefined, resolved: undefined }); }
@@ -59,6 +61,7 @@ const gridLayer = L.layerGroup().addTo(map);
 const exerciseLayer = L.layerGroup().addTo(map);
 let answerMarker = null;
 let adjustingScale = false;
+const ruler = createMapRuler(map, geo, () => state.system, $('map-ruler'));
 
 function scaleAndGrid() {
   const lat = map.getCenter().lat;
@@ -86,6 +89,7 @@ function gridLabel(text, orientation, position) {
 
 function drawGrid() {
   gridLayer.clearLayers();
+  ruler.setEnabled(state.grid && state.ruler);
   $('grid-labels').replaceChildren();
   $('grid-key').hidden = !state.grid;
   $('grid-key').lastChild.textContent = state.system === 'utm' ? ' Reticolo UTM · 1 km' : ' Reticolo geografico · 1′';
@@ -168,6 +172,8 @@ function updateUI() {
   $('tolerance').value = state.tolerance;
   $('grid-toggle').classList.toggle('active', state.grid);
   $('grid-toggle').setAttribute('aria-pressed', state.grid);
+  $('ruler-toggle').classList.toggle('active', state.ruler && state.grid);
+  $('ruler-toggle').setAttribute('aria-pressed', state.ruler && state.grid);
   $('exercise-number').textContent = `ESERCIZIO ${String(state.exercise).padStart(2, '0')}`;
   $('system-tag').textContent = state.system === 'utm' ? 'WGS84 · 33N' : 'WGS84 · N / E';
   $('exercise-title').textContent = state.mode === 'find' ? 'Dalle coordinate alla carta.' : 'Dalla carta alle coordinate.';
@@ -301,6 +307,11 @@ $('reveal-button').addEventListener('click', () => resolve(true));
 $('next-button').addEventListener('click', () => { newExercise(); if (state.mode === 'read') $('answer-first').focus(); });
 $('skip-button').addEventListener('click', newExercise);
 $('grid-toggle').addEventListener('click', () => { state.grid = !state.grid; updateUI(); drawGrid(); saveSettings(); });
+$('ruler-toggle').addEventListener('click', () => {
+  state.ruler = !(state.ruler && state.grid);
+  if (state.ruler) state.grid = true;
+  updateUI(); drawGrid(); saveSettings();
+});
 $('recenter-button').addEventListener('click', () => {
   const center = state.mode === 'read' ? state.target : state.area;
   map.setView(center, scaleZoom(center.lat, state.ppm), { animate: false });

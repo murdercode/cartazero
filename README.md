@@ -25,6 +25,8 @@ Otto zone di esercizio in Abruzzo, reticolo UTM da 1 km o geografico da 1′, fo
 
 La mappa usa una scala nominale 1:25.000, mantenuta durante lo spostamento. Il controllo Calibra consente di misurare una linea con un righello e stabilire i pixel per millimetro effettivi del proprio schermo. La calibrazione è riferita al centro della carta; va ripetuta dopo un cambio di monitor o zoom del browser. Il fondo Web Mercator presenta una piccola variazione di scala con la latitudine all’interno del riquadro.
 
+Il pulsante **Righello** mostra un piccolo coordinatometro sui bordi sinistro e inferiore del quadrato sotto il cursore. Le guide riportano la posizione del cursore sulle due scale graduate, per leggere manualmente lo scarto senza un risultato numerico automatico. In UTM le tacche sono ogni 25 m (1 mm a 1:25.000), con numeri ogni 200 m; nelle geografiche sono ogni secondo d’arco, con numeri ogni 10″. Le graduazioni si diradano se la calibrazione lascia poco spazio. Le tacche seguono il reticolo, inclusa la convergenza UTM, e la calibrazione dello schermo. Su touch si attiva toccando la carta; con la tastiera segue il centro della mappa.
+
 ## Cartografia e librerie
 
 - [Leaflet 1.9.4](https://leafletjs.com/reference.html), BSD-2-Clause, distribuito localmente con licenza in `dist/vendor/`.
