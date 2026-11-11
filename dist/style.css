@@ -23,3 +23,36 @@ dialog{border:1px solid #dce3d1;border-radius:13px;padding:28px 30px;background:
 .map-ruler .ruler-index{stroke:#c16f36;stroke-width:1.5}
 .map-ruler .ruler-cursor{fill:#b96d37;stroke:#fffef5;stroke-width:1.5}
 @media(max-width:720px){.map-toolbar .area-select{flex:1;min-width:0}.map-toolbar .area-select select{width:100%;min-width:0;max-width:150px}.map-tools{flex-shrink:0}.map-tools .layer-select select{max-width:88px}}
+
+.ruler-picker{display:flex;align-items:center;gap:5px;padding:5px 7px;border-radius:4px;color:#8b967f}
+.ruler-picker.active{color:var(--green);background:#edf2e6}
+.ruler-picker svg{width:15px;height:15px;flex-shrink:0}
+.ruler-picker select{font-size:10px;font-weight:500;border:0;background:transparent;color:inherit;max-width:135px;padding:3px 0}
+.normal-ruler-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:43px;padding:7px 16px;background:#f8f7ed;border-bottom:1px solid var(--line)}
+.normal-ruler-controls>span{font-size:10px;color:#8b876e}
+.normal-ruler-controls>div{display:flex;align-items:center;gap:6px}
+.normal-ruler-controls button{font-size:10px;background:#fffef7;border:1px solid #dedfce;border-radius:4px;min-height:27px;padding:4px 8px;color:#617252;white-space:nowrap}
+.normal-ruler-controls button:hover{background:#edf2e6}
+.normal-ruler-controls button:disabled{opacity:.4;cursor:default}
+.normal-ruler-controls button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:white}
+.normal-ruler-controls button svg{width:14px;height:14px;vertical-align:middle}
+.ruler-angle-label{display:flex;align-items:center;gap:2px;font-size:10px;color:#7c826a}
+.ruler-angle-label input{width:53px;padding:5px;border:1px solid #dedfce;border-radius:4px;background:#fffef7;font-size:10px;color:var(--green);text-align:center;font-variant-numeric:tabular-nums}
+.normal-ruler-layer{position:absolute;inset:0;z-index:480;overflow:hidden;pointer-events:none}
+.normal-ruler{position:absolute;pointer-events:none;user-select:none;filter:drop-shadow(0 3px 3px #60451b25)}
+.normal-ruler-grip{width:100%;height:100%;pointer-events:auto;cursor:grab;touch-action:none;border-radius:5px}
+.normal-ruler-grip svg{display:block;width:100%;height:100%;overflow:visible}
+.normal-ruler-body{fill:#f2d679;fill-opacity:.52;stroke:#7f672c;stroke-width:.2}
+.normal-ruler-tick{fill:none;stroke:#553f17;stroke-width:.17;stroke-linecap:butt}
+.normal-ruler-number{fill:#423219;stroke:none;font:500 2.8px var(--sans);text-anchor:middle;dominant-baseline:central}
+.normal-ruler-unit{fill:#6d5423;stroke:none;font:400 2px var(--sans);text-anchor:middle}
+.normal-ruler-brand{fill:#6d5423;stroke:none;font:500 2px var(--sans);text-anchor:middle;letter-spacing:.1px}
+.normal-ruler-hole{fill:#fff9;stroke:#947a41;stroke-width:.2}
+.normal-ruler-turn{position:absolute;left:calc(100% + 13px);top:50%;transform:translateY(-50%);width:27px;height:27px;padding:0;border:1px solid #b9b18d;border-radius:50%;background:#fffbee;color:#745a29;font-size:18px;display:grid;place-items:center;pointer-events:auto;cursor:crosshair;touch-action:none}
+.normal-ruler-turn:before{content:'';position:absolute;width:13px;height:1px;background:#9c8b61;right:100%;top:50%}
+.normal-ruler.moving .normal-ruler-grip{cursor:grabbing}
+.normal-ruler.fixed .normal-ruler-grip{pointer-events:none}
+.normal-ruler.fixed .normal-ruler-turn{display:none}
+.normal-ruler-grip:focus-visible{outline:2px solid #ac7d30;outline-offset:3px}
+@media(max-width:960px){.normal-ruler-controls{flex-wrap:wrap;gap:5px}.normal-ruler-controls>div{margin-left:auto}.normal-ruler-controls>span{font-size:9px}}
+@media(max-width:720px){.map-toolbar{height:auto;flex-wrap:wrap;gap:5px}.map-toolbar>.area-select{flex-basis:100%}.map-toolbar>.area-select select{max-width:none}.map-tools{width:100%;justify-content:flex-end}.map-tools>.layer-select{margin-right:auto}.ruler-picker select{max-width:127px;font-size:10px}.normal-ruler-controls{padding:8px 12px}.normal-ruler-controls>span{width:100%;font-size:9px}.normal-ruler-controls>div{justify-content:flex-end;width:100%}.normal-ruler-controls button{min-height:30px}}
