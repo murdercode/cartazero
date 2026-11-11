@@ -89,3 +89,10 @@ dialog{border:1px solid #dce3d1;border-radius:13px;padding:28px 30px;background:
 @media(max-width:720px){.map-face{inset:28px}.geographic-frame text{font-size:8px}}
 @media(max-width:960px){.normal-ruler-controls{flex-wrap:wrap;gap:5px}.normal-ruler-controls>div{margin-left:auto}.normal-ruler-controls>span{font-size:9px}}
 @media(max-width:720px){.map-toolbar{height:auto;flex-wrap:wrap;gap:5px}.map-toolbar>.area-select{flex-basis:100%}.map-toolbar>.area-select select{max-width:none}.map-tools{width:100%;justify-content:flex-end}.map-tools>.layer-select{margin-right:auto}.ruler-picker select{max-width:127px;font-size:10px}.normal-ruler-controls{padding:8px 12px}.normal-ruler-controls>span{width:100%;font-size:9px}.normal-ruler-controls>div{justify-content:flex-end;width:100%}.normal-ruler-controls button{min-height:30px}}
+.sidebar .scale-sidebar{position:static;min-width:0;margin:0;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:18px 23px;background:#f9faf3;box-shadow:none}
+.sidebar .scale-sidebar .scale-card-heading{justify-content:space-between}
+.tile-message{position:static;transform:none;max-width:none;margin:0;border-width:0 0 1px;border-radius:0;box-shadow:none}
+.map-attribution{padding:4px 12px;background:#fcfdf6;border-top:1px solid var(--line);font-size:8px;line-height:1.5}
+.map-attribution .leaflet-control-attribution{float:none;margin:0;background:transparent!important;padding:0!important;max-width:none}
+.north-reference{font-size:9px;font-weight:600;white-space:nowrap;padding-right:6px;color:#6b7c5e}
+@media(max-width:720px){.sidebar .scale-sidebar{order:3;padding:16px 18px}.map-attribution{padding:4px 10px}}

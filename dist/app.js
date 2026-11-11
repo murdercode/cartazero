@@ -39,6 +39,7 @@ const map = L.map('map', {
   keyboard: true, keyboardPanDelta: 35,
 }).setView(state.area, scaleZoom(state.area.lat, state.ppm));
 map.attributionControl.setPrefix(false);
+$('map-attribution').append(map.attributionControl.getContainer());
 const layers = {
   topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     maxNativeZoom: 17, maxZoom: 18, noWrap: true, updateWhenIdle: true,
@@ -104,8 +105,6 @@ function drawGrid() {
   blueRuler.setEnabled(state.rulerMode === 'normal');
   geographicFrame.draw();
   $('grid-labels').replaceChildren();
-  $('grid-key').hidden = !state.grid;
-  $('grid-key').lastChild.textContent = ' Reticolo UTM · 1 km';
   if (!state.grid) return;
   const b = map.getBounds(), size = map.getSize();
   const lineStyle = { color: '#427c91', weight: .8, opacity: .63, interactive: false, className: 'utm-grid-line' };
@@ -146,10 +145,11 @@ function intersectEdge(points, edge) {
 }
 
 function marker(point, kind = 'target', label = '') {
+  const description = label || (kind === 'target' ? 'Punto da leggere' : 'La tua risposta');
   return L.marker(point, { keyboard: false, interactive: false, icon: L.divIcon({
-    className: '', html: kind === 'target' ? '<div class="target-marker"><span></span></div>' : '<div class="answer-marker">×</div>',
+    className: '', html: kind === 'target' ? `<div class="target-marker" role="img" aria-label="${description}"><span></span></div>` : `<div class="answer-marker" role="img" aria-label="${description}">×</div>`,
     iconSize: kind === 'target' ? [28, 28] : [22, 22], iconAnchor: kind === 'target' ? [14, 14] : [11, 11],
-  }) }).addTo(exerciseLayer).bindTooltip(label, { className: 'marker-tooltip', permanent: !!label, direction: 'bottom', offset: [0, 15] });
+  }) }).addTo(exerciseLayer);
 }
 
 function renderCoordinateCard() {
@@ -189,8 +189,6 @@ function updateUI() {
   $('next-button').hidden = !state.resolved;
   $('reveal-button').hidden = state.resolved;
   $('skip-button').hidden = state.resolved;
-  $('map-instruction').lastElementChild.textContent = state.resolved ? 'Confronta la tua risposta con la soluzione.' : state.mode === 'find' ? 'Leggi le coordinate, poi segna il punto.' : 'Leggi le coordinate del centro del bersaglio.';
-  $('map-instruction').firstElementChild.textContent = state.resolved ? '✓' : state.mode === 'find' ? '1' : '2';
   $('map-area-description').textContent = `${state.area.group} · ${state.area.name}`;
   $('crs-label').innerHTML = 'Bordi WGS84 · 1′ / 10″ <span class="footer-divider">|</span> Reticolo UTM 33N';
   const utm = state.system === 'utm';

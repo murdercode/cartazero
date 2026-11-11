@@ -36,6 +36,8 @@ Sono disponibili due righelli normali simultanei: giallo e azzurro, entrambi da 
 
 Il puntatore mostra due rette sottili e semitrasparenti, dorata e azzurra, che si incrociano esattamente sotto il cursore e si estendono ai bordi della carta. Sono visibili anche sopra i righelli, senza intercettare clic o trascinamenti. In UTM seguono gli assi locali del reticolo, inclusa la convergenza; nelle geografiche seguono paralleli e meridiani. Con touch seguono l’ultimo tocco, con la tastiera il centro della carta. Non mostrano valori numerici o conversioni automatiche.
 
+La carta non ha riquadri informativi sovrapposti: istruzioni e risultati sono nella barra laterale, scala e calibrazione sotto l’esercizio, attribuzioni e Nord sotto la carta. Gli avvisi sulle tessere compaiono sopra la carta. I punti non aprono etichette flottanti e i controlli non mostrano tooltip automatici.
+
 ## Cartografia e librerie
 
 - [Leaflet 1.9.4](https://leafletjs.com/reference.html), BSD-2-Clause, distribuito localmente con licenza in `dist/vendor/`.
