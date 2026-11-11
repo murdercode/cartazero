@@ -31,6 +31,8 @@ Selezionando **Righello reticolo** compare un piccolo coordinatometro sui bordi 
 
 Sono disponibili due righelli normali simultanei: giallo e azzurro, entrambi da 10 cm e con tacche di 1 mm. Ognuno conserva posizione, inclinazione e blocco indipendenti e ha una riga di comandi identificata dal colore. Partono perpendicolari per incrociare le letture. Se si sovrappongono, agire sul corpo o sui comandi di uno lo porta davanti all’altro. Fissare entrambi consente di segnare il punto sulla carta attraverso l’incrocio. La calibrazione del monitor vale per entrambi e le graduazioni rimangono indipendenti dal reticolo.
 
+Il puntatore mostra due rette sottili e semitrasparenti, dorata e azzurra, che si incrociano esattamente sotto il cursore e si estendono ai bordi della carta. Sono visibili anche sopra i righelli, senza intercettare clic o trascinamenti. In UTM seguono gli assi locali del reticolo, inclusa la convergenza; nelle geografiche seguono paralleli e meridiani. Con touch seguono l’ultimo tocco, con la tastiera il centro della carta. Non mostrano valori numerici o conversioni automatiche.
+
 ## Cartografia e librerie
 
 - [Leaflet 1.9.4](https://leafletjs.com/reference.html), BSD-2-Clause, distribuito localmente con licenza in `dist/vendor/`.

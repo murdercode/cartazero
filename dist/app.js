@@ -1,6 +1,7 @@
 import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gradeAnswer, parseAngle, scaleZoom } from './geo.js';
 import { createMapRuler } from './ruler.js?v=1.1.0';
 import { createPhysicalRuler } from './physical-ruler.js?v=1.3.0';
+import { createPointerGuides } from './pointer-guides.js?v=1.4.0';
 
 const $ = id => document.getElementById(id);
 const geo = createGeo(window.proj4);
@@ -65,6 +66,7 @@ let adjustingScale = false;
 const ruler = createMapRuler(map, geo, () => state.system, $('map-ruler'));
 const normalRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('physical-ruler'), controls: $('physical-ruler-controls'), pixelsPerMm: state.ppm });
 const blueRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('blue-ruler'), controls: $('blue-ruler-controls'), pixelsPerMm: state.ppm, perpendicular: true });
+const pointerGuides = createPointerGuides(map, geo, () => state.system, $('pointer-guides'));
 
 function scaleAndGrid() {
   const lat = map.getCenter().lat;
@@ -94,6 +96,7 @@ function gridLabel(text, orientation, position) {
 
 function drawGrid() {
   gridLayer.clearLayers();
+  pointerGuides.refresh();
   ruler.setEnabled(state.grid && state.rulerMode === 'grid');
   normalRuler.setEnabled(state.rulerMode === 'normal');
   blueRuler.setEnabled(state.rulerMode === 'normal');
