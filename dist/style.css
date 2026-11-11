@@ -76,5 +76,16 @@ dialog{border:1px solid #dce3d1;border-radius:13px;padding:28px 30px;background:
 .pointer-guides line{fill:none;stroke-width:1;opacity:.63;vector-effect:non-scaling-stroke}
 .pointer-guide-east{stroke:#a77d32}
 .pointer-guide-north{stroke:#287fa8}
+.map-wrap{background:#faf9ef}
+.map-face{position:absolute;inset:32px;isolation:isolate;background:#e6ead9}
+.geographic-frame{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:hidden}
+.geographic-frame .frame-outline{fill:none;stroke:#64725d;stroke-width:.8}
+.geographic-frame .frame-tick{stroke:#42513d;stroke-width:.6}
+.geographic-frame .frame-tick.major{stroke-width:1}
+.geographic-frame .frame-minute-bar{stroke:#53624b;stroke-width:.4}
+.geographic-frame .frame-minute-bar.dark{fill:#53624b}
+.geographic-frame .frame-minute-bar.light{fill:#faf9ef}
+.geographic-frame text{fill:#3e5037;stroke:none;font:500 9px var(--sans);text-anchor:middle;dominant-baseline:central;font-variant-numeric:tabular-nums}
+@media(max-width:720px){.map-face{inset:28px}.geographic-frame text{font-size:8px}}
 @media(max-width:960px){.normal-ruler-controls{flex-wrap:wrap;gap:5px}.normal-ruler-controls>div{margin-left:auto}.normal-ruler-controls>span{font-size:9px}}
 @media(max-width:720px){.map-toolbar{height:auto;flex-wrap:wrap;gap:5px}.map-toolbar>.area-select{flex-basis:100%}.map-toolbar>.area-select select{max-width:none}.map-tools{width:100%;justify-content:flex-end}.map-tools>.layer-select{margin-right:auto}.ruler-picker select{max-width:127px;font-size:10px}.normal-ruler-controls{padding:8px 12px}.normal-ruler-controls>span{width:100%;font-size:9px}.normal-ruler-controls>div{justify-content:flex-end;width:100%}.normal-ruler-controls button{min-height:30px}}

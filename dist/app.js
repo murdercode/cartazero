@@ -2,6 +2,7 @@ import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gr
 import { createMapRuler } from './ruler.js?v=1.1.0';
 import { createPhysicalRuler } from './physical-ruler.js?v=1.3.0';
 import { createPointerGuides } from './pointer-guides.js?v=1.4.0';
+import { createGeographicFrame } from './geographic-frame.js?v=1.5.0';
 
 const $ = id => document.getElementById(id);
 const geo = createGeo(window.proj4);
@@ -63,7 +64,8 @@ const gridLayer = L.layerGroup().addTo(map);
 const exerciseLayer = L.layerGroup().addTo(map);
 let answerMarker = null;
 let adjustingScale = false;
-const ruler = createMapRuler(map, geo, () => state.system, $('map-ruler'));
+const ruler = createMapRuler(map, geo, () => 'utm', $('map-ruler'));
+const geographicFrame = createGeographicFrame(map, $('geographic-frame'));
 const normalRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('physical-ruler'), controls: $('physical-ruler-controls'), pixelsPerMm: state.ppm });
 const blueRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('blue-ruler'), controls: $('blue-ruler-controls'), pixelsPerMm: state.ppm, perpendicular: true });
 const pointerGuides = createPointerGuides(map, geo, () => state.system, $('pointer-guides'));
@@ -100,13 +102,15 @@ function drawGrid() {
   ruler.setEnabled(state.grid && state.rulerMode === 'grid');
   normalRuler.setEnabled(state.rulerMode === 'normal');
   blueRuler.setEnabled(state.rulerMode === 'normal');
+  geographicFrame.draw();
   $('grid-labels').replaceChildren();
   $('grid-key').hidden = !state.grid;
-  $('grid-key').lastChild.textContent = state.system === 'utm' ? ' Reticolo UTM · 1 km' : ' Reticolo geografico · 1′';
+  $('grid-key').lastChild.textContent = ' Reticolo UTM · 1 km';
   if (!state.grid) return;
   const b = map.getBounds(), size = map.getSize();
-  const lineStyle = { color: '#427c91', weight: .8, opacity: .63, interactive: false };
-  if (state.system === 'utm') {
+  const lineStyle = { color: '#427c91', weight: .8, opacity: .63, interactive: false, className: 'utm-grid-line' };
+  $('map').dataset.gridSystem = 'utm';
+  {
     const corners = [b.getNorthWest(), b.getNorthEast(), b.getSouthWest(), b.getSouthEast()].map(p => geo.toUTM(p));
     const minE = Math.floor(Math.min(...corners.map(p => p.e)) / 1000) * 1000 - 1000;
     const maxE = Math.ceil(Math.max(...corners.map(p => p.e)) / 1000) * 1000 + 1000;
@@ -125,21 +129,6 @@ function drawGrid() {
       L.polyline(points, lineStyle).addTo(gridLayer);
       const edge = intersectEdge(points, 'left');
       if (edge && edge.y > 30 && edge.y < size.y - 24) gridLabel(`${number(n)} N`, 'y', edge.y);
-    }
-  } else {
-    const startLng = Math.floor(b.getWest() * 60), endLng = Math.ceil(b.getEast() * 60);
-    const startLat = Math.floor(b.getSouth() * 60), endLat = Math.ceil(b.getNorth() * 60);
-    for (let minute = startLng; minute <= endLng; minute++) {
-      const lng = minute / 60;
-      L.polyline([[b.getSouth(), lng], [b.getNorth(), lng]], lineStyle).addTo(gridLayer);
-      const x = map.latLngToContainerPoint([b.getNorth(), lng]).x;
-      if (x > 30 && x < size.x - 30) gridLabel(`${Math.floor(minute / 60)}° ${String(minute % 60).padStart(2, '0')}′ E`, 'x', x);
-    }
-    for (let minute = startLat; minute <= endLat; minute++) {
-      const lat = minute / 60;
-      L.polyline([[lat, b.getWest()], [lat, b.getEast()]], lineStyle).addTo(gridLayer);
-      const y = map.latLngToContainerPoint([lat, b.getWest()]).y;
-      if (y > 30 && y < size.y - 24) gridLabel(`${Math.floor(minute / 60)}° ${String(minute % 60).padStart(2, '0')}′ N`, 'y', y);
     }
   }
 }
@@ -203,7 +192,7 @@ function updateUI() {
   $('map-instruction').lastElementChild.textContent = state.resolved ? 'Confronta la tua risposta con la soluzione.' : state.mode === 'find' ? 'Leggi le coordinate, poi segna il punto.' : 'Leggi le coordinate del centro del bersaglio.';
   $('map-instruction').firstElementChild.textContent = state.resolved ? '✓' : state.mode === 'find' ? '1' : '2';
   $('map-area-description').textContent = `${state.area.group} · ${state.area.name}`;
-  $('crs-label').innerHTML = state.system === 'utm' ? 'WGS84 / UTM 33N <span class="footer-divider">|</span> EPSG:32633' : 'Geografiche WGS84 <span class="footer-divider">|</span> EPSG:4326';
+  $('crs-label').innerHTML = 'Bordi WGS84 · 1′ / 10″ <span class="footer-divider">|</span> Reticolo UTM 33N';
   const utm = state.system === 'utm';
   $('first-label').textContent = utm ? 'Est (E) · metri' : 'Latitudine · Nord';
   $('second-label').textContent = utm ? 'Nord (N) · metri' : 'Longitudine · Est';

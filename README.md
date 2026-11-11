@@ -7,13 +7,14 @@ Palestra cartografica in italiano con due esercizi, disponibili sia in coordinat
 
 ## Avvio
 
-Richiede Python 3 per il server locale e Node.js 22 per i test. Non richiede installazione di dipendenze.
+Richiede Python 3 per il server locale e Node.js 22 per build e test. Non richiede installazione di dipendenze.
 
 ```sh
-npm run dev
+npm run build
+npm start
 ```
 
-Aprire http://127.0.0.1:4173/. Il sito statico è interamente in `dist/`.
+Aprire http://127.0.0.1:4173/. La build locale è in `build/`; il codice del sito statico è in `dist/`. Dopo una modifica, ripetere `npm run build` per aggiornare la build servita. Per lavorare direttamente sui sorgenti con il server di sviluppo, usare `npm run dev` al posto di `npm start`.
 
 ```sh
 npm test
@@ -21,11 +22,13 @@ npm test
 
 ## Funzioni
 
-Otto zone di esercizio in Abruzzo, reticolo UTM da 1 km o geografico da 1′, formati DMS/DM/DD, tolleranze da 25/50/100 m, confronto grafico della risposta, errore in metri e millimetri sulla carta, risultati locali (ultimi 500 esercizi), comandi da tastiera e interfaccia responsive. La soluzione consultata conta come esercizio saltato. “Cambia” genera un esercizio senza registrare un tentativo.
+Otto zone di esercizio in Abruzzo, reticolo UTM da 1 km all’interno e cornice geografica sui quattro bordi, formati DMS/DM/DD, tolleranze da 25/50/100 m, confronto grafico della risposta, errore in metri e millimetri sulla carta, risultati locali (ultimi 500 esercizi), comandi da tastiera e interfaccia responsive. La soluzione consultata conta come esercizio saltato. “Cambia” genera un esercizio senza registrare un tentativo.
 
 La mappa usa una scala nominale 1:25.000, mantenuta durante lo spostamento. Il controllo Calibra consente di misurare una linea con un righello e stabilire i pixel per millimetro effettivi del proprio schermo. La calibrazione è riferita al centro della carta; va ripetuta dopo un cambio di monitor o zoom del browser. Il fondo Web Mercator presenta una piccola variazione di scala con la latitudine all’interno del riquadro.
 
-Selezionando **Righello reticolo** compare un piccolo coordinatometro sui bordi sinistro e inferiore del quadrato sotto il cursore. Le guide riportano la posizione del cursore sulle due scale graduate, per leggere manualmente lo scarto senza un risultato numerico automatico. In UTM le tacche sono ogni 25 m (1 mm a 1:25.000), con numeri ogni 200 m; nelle geografiche sono ogni secondo d’arco, con numeri ogni 10″. Le graduazioni si diradano se la calibrazione lascia poco spazio. Le tacche seguono il reticolo, inclusa la convergenza UTM, e la calibrazione dello schermo. Su touch si attiva toccando la carta; con la tastiera segue il centro della mappa.
+La carta mantiene sempre la stessa impostazione nei due sistemi di esercizio: reticolo chilometrico UTM nell’area cartografica, cornice geografica WGS84 su tutti e quattro i lati. La cornice ha barre alternate ogni 1′ (60″), tacche ogni 10″ e valori di longitudine in alto e in basso, latitudine a sinistra e a destra. Non vengono disegnate linee geografiche interne permanenti. La scelta UTM / Geografiche riguarda le domande e i campi della risposta. Le etichette UTM rimangono all’interno della cornice. Cornice, reticolo e guide vengono ricalcolati dopo spostamenti, ridimensionamenti e calibrazione.
+
+Selezionando **Righello UTM** compare un coordinatometro sui bordi sinistro e inferiore del quadrato chilometrico sotto il cursore. Le tacche sono ogni 25 m (1 mm a 1:25.000), con numeri ogni 200 m; si diradano se la calibrazione lascia poco spazio. È riferito sempre al reticolo UTM, anche negli esercizi geografici. Per le geografiche si usano la cornice, i due righelli normali e le guide temporanee del puntatore.
 
 **Righello cm / mm** è il nuovo strumento predefinito: un righello trasparente da 10 cm con tacche di 1 mm. È indipendente da coordinate, zoom, reticolo, posizione del mouse e area di esercizio; resta sullo schermo mentre sposti la carta. Si trascina dal corpo e ruota liberamente attorno allo zero dal pallino. Sono disponibili angolo numerico, 0° / 90°, ricentraggio e Fissa/Sblocca. Quando è fissato, i clic attraversano il righello e raggiungono la carta. La calibrazione del monitor regola i cm/mm fisici: non è un adattamento alle distanze del reticolo. A parità di calibrazione, la lunghezza rimane identica in tutti gli esercizi. Si ricava manualmente la distanza sul terreno applicando 1:25.000; per gradi/minuti/secondi si usa la proporzione rispetto all’intervallo del reticolo. Tastiera sul righello: frecce per spostare, Q/E per ruotare; Maiusc aumenta il passo. Su schermi stretti parte verticale e mantiene i suoi 10 cm.
 
