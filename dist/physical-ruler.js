@@ -24,7 +24,7 @@ export function rulerMarkup() {
   return markup + '<text class="normal-ruler-unit" x="3.7" y="12.5">cm</text><text class="normal-ruler-brand" x="58" y="14.5">cartine. · 10 cm</text><circle class="normal-ruler-hole" cx="112" cy="12" r="1.4"/>';
 }
 
-export function createPhysicalRuler({ container, element, controls, pixelsPerMm, perpendicular = false }) {
+export function createPhysicalRuler({ container, boundary = container, element, controls, pixelsPerMm, perpendicular = false }) {
   let ppm = pixelsPerMm, enabled = false, initialized = false, fixed = false, gesture = null;
   let position = { x: 0, y: 0, angle: 0 };
   const grip = element.querySelector('.normal-ruler-grip');
@@ -65,9 +65,13 @@ export function createPhysicalRuler({ container, element, controls, pixelsPerMm,
     initialized = true; render();
   }
 
-  function keepZeroVisible() {
-    position.x = Math.max(12, Math.min(container.clientWidth - 12, position.x));
-    position.y = Math.max(12, Math.min(container.clientHeight - 12, position.y));
+  function keepZeroOnPaper() {
+    // The zero can cross the map edge into the surrounding paper margin.
+    // Keep it reachable there, including when the ruler is rotated.
+    const origin = container.getBoundingClientRect();
+    const paper = boundary.getBoundingClientRect();
+    position.x = Math.max(paper.left - origin.left + 12, Math.min(paper.right - origin.left - 12, position.x));
+    position.y = Math.max(paper.top - origin.top + 12, Math.min(paper.bottom - origin.top - 12, position.y));
   }
 
   function pointerAngle(event) {
@@ -92,7 +96,7 @@ export function createPhysicalRuler({ container, element, controls, pixelsPerMm,
     if (gesture.kind === 'move') {
       position.x = gesture.origin.x + event.clientX - gesture.clientX;
       position.y = gesture.origin.y + event.clientY - gesture.clientY;
-      keepZeroVisible();
+      keepZeroOnPaper();
     } else {
       position.angle = rotatedAngle(gesture.origin.angle, gesture.startAngle, pointerAngle(event), event.shiftKey);
     }
@@ -126,7 +130,7 @@ export function createPhysicalRuler({ container, element, controls, pixelsPerMm,
       else if (key === 'q') position.angle = normalizeAngle(position.angle - rotation);
       else if (key === 'e') position.angle = normalizeAngle(position.angle + rotation);
       else return;
-      event.preventDefault(); event.stopPropagation(); keepZeroVisible(); render();
+      event.preventDefault(); event.stopPropagation(); keepZeroOnPaper(); render();
     });
   }
   controls.querySelectorAll('[data-ruler-angle]').forEach(button => button.addEventListener('click', () => { position.angle = Number(button.dataset.rulerAngle); render(); }));
@@ -139,7 +143,7 @@ export function createPhysicalRuler({ container, element, controls, pixelsPerMm,
   controls.addEventListener('focusin', activate);
   controls.querySelector('[data-ruler-control="center"]').addEventListener('click', center);
   lockButton.addEventListener('click', () => { fixed = !fixed; render(); });
-  new ResizeObserver(() => { if (enabled && initialized && container.clientWidth > 0 && container.clientHeight > 0) { keepZeroVisible(); render(); } }).observe(container);
+  new ResizeObserver(() => { if (enabled && initialized && container.clientWidth > 0 && container.clientHeight > 0) { keepZeroOnPaper(); render(); } }).observe(container);
 
   return {
     setEnabled(value) {

@@ -1,6 +1,6 @@
 import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gradeAnswer, parseAngle, scaleZoom } from './geo.js';
 import { createMapRuler } from './ruler.js?v=1.1.0';
-import { createPhysicalRuler } from './physical-ruler.js?v=1.3.0';
+import { createPhysicalRuler } from './physical-ruler.js?v=1.6.1';
 import { createPointerGuides } from './pointer-guides.js?v=1.4.0';
 import { createGeographicFrame } from './geographic-frame.js?v=1.5.0';
 
@@ -67,8 +67,8 @@ let answerMarker = null;
 let adjustingScale = false;
 const ruler = createMapRuler(map, geo, () => 'utm', $('map-ruler'));
 const geographicFrame = createGeographicFrame(map, $('geographic-frame'));
-const normalRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('physical-ruler'), controls: $('physical-ruler-controls'), pixelsPerMm: state.ppm });
-const blueRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), element: $('blue-ruler'), controls: $('blue-ruler-controls'), pixelsPerMm: state.ppm, perpendicular: true });
+const normalRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), boundary: $('map-wrap'), element: $('physical-ruler'), controls: $('physical-ruler-controls'), pixelsPerMm: state.ppm });
+const blueRuler = createPhysicalRuler({ container: $('physical-ruler-layer'), boundary: $('map-wrap'), element: $('blue-ruler'), controls: $('blue-ruler-controls'), pixelsPerMm: state.ppm, perpendicular: true });
 const pointerGuides = createPointerGuides(map, geo, () => state.system, $('pointer-guides'));
 
 function scaleAndGrid() {

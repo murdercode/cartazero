@@ -8,10 +8,10 @@
   <title>Cartine — Coordinate in Abruzzo</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./vendor/leaflet.css">
-  <link rel="stylesheet" href="./style.css?v=1.6.0">
+  <link rel="stylesheet" href="./style.css?v=1.6.1">
   <script src="./vendor/leaflet.js" defer></script>
   <script src="./vendor/proj4.js" defer></script>
-  <script src="./app.js?v=1.6.0" type="module"></script>
+  <script src="./app.js?v=1.6.1" type="module"></script>
 </head>
 <body>
   <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -70,7 +70,7 @@
           <div id="tile-message" class="tile-message" role="status" hidden>Le tessere topografiche non rispondono. <button id="fallback-button">Usa OpenStreetMap</button></div>
         <div id="physical-ruler-controls" class="normal-ruler-controls" hidden><span><i class="ruler-swatch yellow"></i> Giallo · trascina e ruota dal pallino</span><div><button type="button" data-ruler-angle="0">0°</button><button type="button" data-ruler-angle="90">90°</button><label class="ruler-angle-label"><span class="sr-only">Inclinazione del righello giallo in gradi</span><input type="number" id="ruler-angle" data-ruler-control="angle" min="-180" max="180" step="0.1" value="0">°</label><button type="button" id="ruler-center" data-ruler-control="center" aria-label="Ricentra il righello giallo"><svg><use href="#i-target"/></svg></button><button type="button" id="ruler-lock" data-ruler-control="lock" aria-pressed="false">Fissa</button></div></div>
         <div id="blue-ruler-controls" class="normal-ruler-controls blue-ruler-controls" hidden><span><i class="ruler-swatch blue"></i> Azzurro · indipendente dal giallo</span><div><button type="button" data-ruler-angle="0">0°</button><button type="button" data-ruler-angle="90">90°</button><label class="ruler-angle-label"><span class="sr-only">Inclinazione del righello azzurro in gradi</span><input type="number" id="blue-ruler-angle" data-ruler-control="angle" min="-180" max="180" step="0.1" value="90">°</label><button type="button" id="blue-ruler-center" data-ruler-control="center" aria-label="Ricentra il righello azzurro"><svg><use href="#i-target"/></svg></button><button type="button" id="blue-ruler-lock" data-ruler-control="lock" aria-pressed="false">Fissa</button></div></div>
-        <div class="map-wrap">
+        <div id="map-wrap" class="map-wrap">
           <svg id="geographic-frame" class="geographic-frame" role="img" aria-label="Cornice geografica WGS84: graduazioni ogni minuto, tacche ogni dieci secondi"></svg>
           <div class="map-face">
           <div id="map" tabindex="0" role="application" aria-label="Mappa interattiva. Usa le frecce per spostarti; Invio seleziona il punto al centro."></div>
