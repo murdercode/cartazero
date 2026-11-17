@@ -40,6 +40,10 @@ Il puntatore mostra due rette sottili e semitrasparenti, dorata e azzurra, che s
 
 La carta non ha riquadri informativi sovrapposti: istruzioni e risultati sono nella barra laterale, scala e calibrazione sotto l’esercizio, attribuzioni e Nord sotto la carta. Gli avvisi sulle tessere compaiono sopra la carta. I punti non aprono etichette flottanti e i controlli non mostrano tooltip automatici.
 
+## iPhone e schermi stretti
+
+Fino a 960 px l’interfaccia dispone l’esercizio sopra la mappa e i pulsanti di verifica sotto. Impostazioni e strumenti sono richiudibili; i controlli touch hanno aree di almeno 44 px e i campi usano caratteri da 16 px per evitare lo zoom automatico dei campi su iPhone. **Solo carta** dedica lo schermo alla mappa, lasciando visibili le coordinate richieste; **Torna all’esercizio** ripristina la pagina. La modalità rispetta i margini sicuri dello schermo e non richiede il supporto all’API Fullscreen. I righelli conservano le graduazioni fisiche e la calibrazione, anche nella vista Solo carta.
+
 ## Cartografia e librerie
 
 - [Leaflet 1.9.4](https://leafletjs.com/reference.html), BSD-2-Clause, distribuito localmente con licenza in `dist/vendor/`.

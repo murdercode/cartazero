@@ -2,16 +2,16 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#244c3b">
   <meta name="description" content="Allenati con coordinate geografiche e UTM sulle mappe dell’Abruzzo. Trova un punto o leggine le coordinate, alla scala 1:25.000.">
   <title>CartaZero — Coordinate in Abruzzo</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./vendor/leaflet.css">
-  <link rel="stylesheet" href="./style.css?v=1.7.0">
+  <link rel="stylesheet" href="./style.css?v=1.8.0">
   <script src="./vendor/leaflet.js" defer></script>
   <script src="./vendor/proj4.js" defer></script>
-  <script src="./app.js?v=1.7.0" type="module"></script>
+  <script src="./app.js?v=1.8.0" type="module"></script>
 </head>
 <body>
   <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
@@ -35,7 +35,7 @@
     <div class="page-heading"><div><div class="eyebrow"><span class="live-dot"></span> PALESTRA DI CARTOGRAFIA</div><h1>Allenati a trovare la strada.</h1></div><div class="region-badge"><svg><use href="#i-pin"/></svg> Abruzzo <span>ITALIA</span></div></div>
     <div class="workspace">
       <aside class="sidebar" aria-label="Impostazioni ed esercizio">
-        <div class="sidebar-section setup-section">
+        <details id="practice-settings" class="sidebar-section setup-section" open><summary>Impostazioni esercizio<span>Modalità, coordinate e precisione</span></summary>
           <div class="section-label">SCEGLI COME ALLENARTI</div>
           <div class="mode-picker" role="group" aria-label="Tipo di esercizio">
             <button class="mode-button active" data-mode="find" aria-pressed="true"><svg><use href="#i-target"/></svg><span>Trova il punto<small>Coordinate → mappa</small></span><span class="radio-dot"></span></button>
@@ -44,8 +44,9 @@
           <div class="section-label system-label">SISTEMA DI COORDINATE</div>
           <div class="segmented" role="group" aria-label="Sistema di coordinate"><button data-system="utm" class="active" aria-pressed="true">UTM</button><button data-system="geo" aria-pressed="false">Geografiche</button></div>
           <div class="settings-row"><label id="format-wrap" hidden>Formato<select id="geo-format"><option value="dms">Gradi, minuti, secondi</option><option value="dm">Gradi e minuti decimali</option><option value="dd">Gradi decimali</option></select></label><label>Tolleranza<select id="tolerance"><option value="25">25 m · precisa</option><option value="50" selected>50 m · standard</option><option value="100">100 m · iniziale</option></select></label></div>
-        </div>
+        </details>
         <section class="exercise-section" aria-labelledby="exercise-title">
+          <div class="exercise-problem">
           <div class="exercise-kicker"><span id="exercise-number">ESERCIZIO 01</span><span id="system-tag">WGS84 · 33N</span></div>
           <h2 id="exercise-title">Dalle coordinate alla carta.</h2>
           <p class="exercise-description" id="exercise-description">Individua queste coordinate e clicca sulla mappa per segnare il punto.</p>
@@ -55,21 +56,28 @@
             <div class="field"><label for="answer-second" id="second-label">Nord (N) · metri</label><div class="input-wrap"><input id="answer-second" name="second" autocomplete="off" inputmode="decimal" required><span id="second-unit">m N</span></div></div>
             <p class="input-help" id="input-help">Metri interi, senza separatori delle migliaia.</p>
           </form>
+          </div>
+          <div class="exercise-actions">
           <div id="selection-status" class="selection-status"><span class="status-dot"></span><span>In attesa del tuo punto sulla carta</span></div>
           <p id="form-error" role="alert" class="form-error" hidden></p>
           <div id="feedback" class="feedback" aria-live="polite" hidden></div>
           <button id="verify-button" class="primary-button" disabled>Verifica il punto<svg><use href="#i-check"/></svg></button>
           <button id="next-button" class="primary-button" hidden>Prossimo esercizio<svg><use href="#i-arrow"/></svg></button>
           <div class="exercise-secondary"><button class="quiet-button" id="reveal-button">Mostra soluzione</button><button class="quiet-button" id="skip-button"><svg><use href="#i-refresh"/></svg> Cambia</button></div>
+          </div>
         </section>
           <div class="scale-card scale-sidebar"><div class="scale-card-heading"><strong>1 : 25 000</strong><button id="calibrate-button"><svg><use href="#i-ruler"/></svg><span>Calibra</span></button></div><div id="scale-bar" class="scale-bar"><span>0</span><span>250</span><span>500 m</span><div class="scale-segments"></div></div><div id="scale-caption">1 cm sulla carta = 250 m sul terreno</div></div>
         <div class="session-section"><div class="session-heading"><span class="section-label">IL TUO ALLENAMENTO</span><button id="reset-stats" class="quiet-button">Azzera</button></div><div class="stats"><div><strong id="stat-total">0</strong><span>completati</span></div><div><strong id="stat-rate">—</strong><span>corretti</span></div><div><strong id="stat-error">—</strong><span>errore medio</span></div></div><div class="session-foot"><span id="history-dots" aria-hidden="true"></span><span>Salvati su questo dispositivo</span></div></div>
       </aside>
       <section class="map-panel" aria-label="Carta per gli esercizi">
-        <div class="map-toolbar"><div class="area-select"><svg><use href="#i-pin"/></svg><label class="sr-only" for="area">Zona di allenamento</label><select id="area"></select></div><div class="map-tools"><label class="layer-select"><span class="sr-only">Carta di base</span><select id="base-layer"><option value="topo">Topografica</option><option value="osm">OpenStreetMap</option></select></label><button id="grid-toggle" class="tool-button active" aria-pressed="true"><svg><use href="#i-grid"/></svg><span>UTM</span></button><label class="ruler-picker active"><svg><use href="#i-ruler"/></svg><span class="sr-only">Tipo di righello</span><select id="ruler-tool"><option value="normal">Righelli cm / mm</option><option value="grid">Righello UTM</option><option value="off">Nessun righello</option></select></label><button id="recenter-button" class="tool-button icon-only" aria-label="Ricentra l’esercizio"><svg><use href="#i-target"/></svg></button></div></div>
+        <div class="mobile-map-actions"><span>Carta · 1:25.000</span><button type="button" id="map-focus-toggle" aria-pressed="false">Solo carta ↗</button></div>
+        <p id="focus-task" class="focus-task"></p>
+        <details id="map-instruments" class="map-instruments" open><summary>Zona e strumenti<span>Righelli, reticolo e fondo carta</span></summary>
+        <div class="map-toolbar"><div class="area-select"><svg><use href="#i-pin"/></svg><label class="sr-only" for="area">Zona di allenamento</label><select id="area"></select></div><div class="map-tools"><label class="layer-select"><span class="sr-only">Carta di base</span><select id="base-layer"><option value="topo">Topografica</option><option value="osm">OpenStreetMap</option></select></label><button id="grid-toggle" aria-label="Mostra reticolo UTM" class="tool-button active" aria-pressed="true"><svg><use href="#i-grid"/></svg><span>UTM</span></button><label class="ruler-picker active"><svg><use href="#i-ruler"/></svg><span class="sr-only">Tipo di righello</span><select id="ruler-tool"><option value="normal">Righelli cm / mm</option><option value="grid">Righello UTM</option><option value="off">Nessun righello</option></select></label><button id="recenter-button" class="tool-button icon-only" aria-label="Ricentra l’esercizio"><svg><use href="#i-target"/></svg></button></div></div>
           <div id="tile-message" class="tile-message" role="status" hidden>Le tessere topografiche non rispondono. <button id="fallback-button">Usa OpenStreetMap</button></div>
         <div id="physical-ruler-controls" class="normal-ruler-controls" hidden><span><i class="ruler-swatch yellow"></i> Giallo · trascina e ruota dal pallino</span><div><button type="button" data-ruler-angle="0">0°</button><button type="button" data-ruler-angle="90">90°</button><label class="ruler-angle-label"><span class="sr-only">Inclinazione del righello giallo in gradi</span><input type="number" id="ruler-angle" data-ruler-control="angle" min="-180" max="180" step="0.1" value="0">°</label><button type="button" id="ruler-center" data-ruler-control="center" aria-label="Ricentra il righello giallo"><svg><use href="#i-target"/></svg></button><button type="button" id="ruler-lock" data-ruler-control="lock" aria-pressed="false">Fissa</button></div></div>
         <div id="blue-ruler-controls" class="normal-ruler-controls blue-ruler-controls" hidden><span><i class="ruler-swatch blue"></i> Azzurro · indipendente dal giallo</span><div><button type="button" data-ruler-angle="0">0°</button><button type="button" data-ruler-angle="90">90°</button><label class="ruler-angle-label"><span class="sr-only">Inclinazione del righello azzurro in gradi</span><input type="number" id="blue-ruler-angle" data-ruler-control="angle" min="-180" max="180" step="0.1" value="90">°</label><button type="button" id="blue-ruler-center" data-ruler-control="center" aria-label="Ricentra il righello azzurro"><svg><use href="#i-target"/></svg></button><button type="button" id="blue-ruler-lock" data-ruler-control="lock" aria-pressed="false">Fissa</button></div></div>
+        </details>
         <div id="map-wrap" class="map-wrap">
           <svg id="geographic-frame" class="geographic-frame" role="img" aria-label="Cornice geografica WGS84: graduazioni ogni minuto, tacche ogni dieci secondi"></svg>
           <div class="map-face">

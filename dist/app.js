@@ -191,6 +191,9 @@ function updateUI() {
   $('skip-button').hidden = state.resolved;
   $('map-area-description').textContent = `${state.area.group} · ${state.area.name}`;
   $('crs-label').innerHTML = 'Bordi WGS84 · 1′ / 10″ <span class="footer-divider">|</span> Reticolo UTM 33N';
+  $('focus-task').textContent = state.mode === 'find'
+    ? state.system === 'utm' ? `E ${number(geo.toUTM(state.target).e)} · N ${number(geo.toUTM(state.target).n)}` : `${formatAngle(state.target.lat, state.format, 'lat')} · ${formatAngle(state.target.lng, state.format, 'lng')}`
+    : 'Leggi le coordinate del bersaglio.';
   const utm = state.system === 'utm';
   $('first-label').textContent = utm ? 'Est (E) · metri' : 'Latitudine · Nord';
   $('second-label').textContent = utm ? 'Nord (N) · metri' : 'Longitudine · Est';
@@ -343,4 +346,23 @@ $('calibrate-form').addEventListener('submit', e => {
 $('reset-calibration').addEventListener('click', () => { state.ppm = DEFAULT_PPM; state.calibrated = false; saveSettings(); scaleAndGrid(); $('calibrate-dialog').close(); });
 $('reset-stats').addEventListener('click', () => $('reset-dialog').showModal());
 $('confirm-reset').addEventListener('click', () => { history = []; writeStorage(HISTORY, history); renderStats(); $('reset-dialog').close(); });
+// CSS focus mode works on iPhone without depending on the Fullscreen API.
+const compactLayout = window.matchMedia('(max-width: 960px)');
+function setMapFocus(active) {
+  const center = active && state.mode === 'read' ? state.target : map.getCenter();
+  document.body.classList.toggle('map-focused', active);
+  $('map-focus-toggle').setAttribute('aria-pressed', active);
+  $('map-focus-toggle').textContent = active ? 'Torna all’esercizio ↙' : 'Solo carta ↗';
+  map.invalidateSize({ pan: false });
+  if (center) map.panTo(center, { animate: false });
+}
+function syncCompactLayout() {
+  $('practice-settings').open = !compactLayout.matches;
+  $('map-instruments').open = !compactLayout.matches;
+  setMapFocus(false);
+}
+syncCompactLayout();
+compactLayout.addEventListener('change', syncCompactLayout);
+$('map-focus-toggle').addEventListener('click', () => setMapFocus(!document.body.classList.contains('map-focused')));
+document.addEventListener('keydown', event => { if (event.key === 'Escape') setMapFocus(false); });
 renderStats(); newExercise();
