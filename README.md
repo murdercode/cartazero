@@ -1,4 +1,6 @@
-# Cartine — Coordinate in Abruzzo
+# CartaZero — Parti da zero. Trova il punto.
+
+**[Apri CartaZero](https://murdercode.github.io/cartazero/)** · [Repository](https://github.com/murdercode/cartazero)
 
 Palestra cartografica in italiano con due esercizi, disponibili sia in coordinate geografiche WGS84 sia in UTM WGS84 / 33N (EPSG:32633):
 
@@ -50,4 +52,8 @@ La carta richiede Internet per le tessere. La base non è una tavoletta IGM uffi
 
 ## Pubblicazione
 
-Sito statico privato tramite Sites, configurato da `.openai/hosting.json`.
+Sito statico pubblico su **GitHub Pages**: https://murdercode.github.io/cartazero/.
+
+Il workflow `.github/workflows/pages.yml` esegue i test, genera `build/` e pubblica il sito automaticamente dopo ogni push su `main`. Le pull request eseguono test e build senza pubblicare. Per avviare una pubblicazione manuale, usare **Actions → Deploy CartaZero → Run workflow**.
+
+Le librerie distribuite in `dist/vendor/` mantengono le rispettive licenze. Le tessere cartografiche vengono richieste ai servizi indicati sopra; non sono incluse nella repository.

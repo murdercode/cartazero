@@ -1,6 +1,6 @@
 import { AREAS, DEFAULT_PPM, createGeo, decimalNumber, distance, formatAngle, gradeAnswer, parseAngle, scaleZoom } from './geo.js';
 import { createMapRuler } from './ruler.js?v=1.1.0';
-import { createPhysicalRuler } from './physical-ruler.js?v=1.6.1';
+import { createPhysicalRuler } from './physical-ruler.js?v=1.7.0';
 import { createPointerGuides } from './pointer-guides.js?v=1.4.0';
 import { createGeographicFrame } from './geographic-frame.js?v=1.5.0';
 

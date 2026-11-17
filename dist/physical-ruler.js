@@ -21,7 +21,7 @@ export function rulerMarkup() {
     markup += `<path class="normal-ruler-tick" d="M${x},0.3V${depth}"/>`;
     if (mm % 10 === 0) markup += `<text class="normal-ruler-number" x="${x}" y="8.4">${mm / 10}</text>`;
   }
-  return markup + '<text class="normal-ruler-unit" x="3.7" y="12.5">cm</text><text class="normal-ruler-brand" x="58" y="14.5">cartine. · 10 cm</text><circle class="normal-ruler-hole" cx="112" cy="12" r="1.4"/>';
+  return markup + '<text class="normal-ruler-unit" x="3.7" y="12.5">cm</text><text class="normal-ruler-brand" x="58" y="14.5">CartaZero · 10 cm</text><circle class="normal-ruler-hole" cx="112" cy="12" r="1.4"/>';
 }
 
 export function createPhysicalRuler({ container, boundary = container, element, controls, pixelsPerMm, perpendicular = false }) {
